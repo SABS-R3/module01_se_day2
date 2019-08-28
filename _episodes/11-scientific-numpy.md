@@ -67,7 +67,7 @@ However, we can also see our first weakness of NumPy arrays versus Python lists:
 ~~~
 my_array.append(4)
 ~~~
-{: .language-output}
+{: .language-python}
 
 ~~~
 ---
@@ -83,7 +83,7 @@ For NumPy arrays, you typically don't change the data size once you've defined y
 
 ## Elementwise Operations
 
-One great advantage is that most operations can be applied element-wise automatically, and in a very Pythonic way!
+One great advantage of NumPy arrays is that most operations can be applied element-wise automatically, and in a very Pythonic way!
 
 ~~~
 my_array + 2
@@ -97,7 +97,7 @@ array([2, 3, 4, 5, 6])
 ~~~
 {: .output}
 
-These are known as 'vectorised' operations, and are very fast. We'll be looking at these in more detail next week when we look at optimisation.
+These are known as 'vectorised' operations, and are very fast. We'll be looking at making use of these in more detail next week when we look at optimisation.
 
 But for now, let's take a brief look at a basic example that demonstrates the performance of NumPy over Python lists. First, using Python lists we can do the following, that creates a 2D list of size 10000x10000, sets all elements to zero, then adds 10 to all those elements:
 
@@ -184,7 +184,7 @@ The output tells us that `data` currently refers to an N-dimensional array, the 
 > {: .language-python}
 >
 > ~~~
-> float64
+> dtype('float64')
 > ~~~
 > {: .output}
 >
@@ -286,10 +286,52 @@ The above example selects rows 0 through 2 and columns 36 through to the end of 
 ~~~
 {: .output}
 
+> ## Numpy Memory
+>
+> Numpy memory management can be tricksy:
+>
+> ~~~
+> x = np.arange(5)
+> y = x[:]
+> ~~~
+> {: .language-python}
+>
+> ~~~
+> y[2] = 0
+> x
+> ~~~
+> {: .language-python}
+>
+> ~~~
+> array([0, 1, 0, 3, 4])
+> ~~~
+> {: .output}
+>
+> It does not behave like lists!
+>
+> ~~~
+> x = list(range(5))
+> y = x[:]
+> ~~~
+> {: .language-python}
+>
+> ~~~
+> y[2] = 0
+> x
+> ~~~
+> {: .language-python}
+>
+> ~~~
+> [0, 1, 2, 3, 4]
+> ~~~
+> {: .output}
+>
+> We must use np.copy to force separate memory. Otherwise NumPy tries its hardest to make slices be views on data.
+{: .callout}
 
-### Elementwise Operations
+### Elementwise Operations on Multiple Arrays
 
-As we've seen, arrays also know how to perform common mathematical operations on their values element-by-element, but we can also add arrays together in an elementwise fashion:
+As we've seen, arrays also know how to perform common mathematical operations on their values element-by-element:
 
 ~~~
 doubledata = data * 2.0
@@ -350,7 +392,7 @@ tripledata:
 > ~~~
 > import numpy
 >
-> A = numpy.array([[1,2,3], [4,5,6], [7, 8, 9]])
+> A = numpy.array([[1,2,3], [4,5,6], [7,8,9]])
 > print('A = ')
 > print(A)
 >
@@ -383,21 +425,21 @@ tripledata:
 > ~~~
 > {: .output}
 >
-> Write some additional code that slices the first and last columns of `A`,
-> and stacks them into a 3x2 array.
+> Write some additional code that slices the first and last columns of our inflammation `data` array,
+> and stacks them into a 60x2 array, to give us data from the first and last days of our trial across all patients.
 > Make sure to `print` the results to verify your solution.
 >
 > > ## Solution
 > >
 > > A 'gotcha' with array indexing is that singleton dimensions
-> > are dropped by default. That means `A[:, 0]` is a one dimensional
+> > are dropped by default. That means `data[:, 0]` is a one dimensional
 > > array, which won't stack as desired. To preserve singleton dimensions,
-> > the index itself can be a slice or array. For example, `A[:, :1]` returns
+> > the index itself can be a slice or array. For example, `data[:, :1]` returns
 > > a two dimensional array with one singleton dimension (i.e. a column
 > > vector).
 > >
 > > ~~~
-> > D = numpy.hstack((A[:, :1], A[:, -1:]))
+> > D = numpy.hstack([data[:, :1], data[:, -1:]])
 > > print('D = ')
 > > print(D)
 > > ~~~
@@ -405,30 +447,11 @@ tripledata:
 > >
 > > ~~~
 > > D =
-> > [[1 3]
-> >  [4 6]
-> >  [7 9]]
-> > ~~~
-> > {: .output}
-> {: .solution}
->
-> > ## Solution
-> >
-> > An alternative way to achieve the same result is to use Numpy's
-> > delete function to remove the second column of A.
-> >
-> > ~~~
-> > D = numpy.delete(A, 1, 1)
-> > print('D = ')
-> > print(D)
-> > ~~~
-> > {: .language-python}
-> >
-> > ~~~
-> > D =
-> > [[1 3]
-> >  [4 6]
-> >  [7 9]]
+> > [[0. 0.]
+> >  [0. 1.]
+> >  ...
+> >  [0. 0.]
+> >  [0. 0.]]
 > > ~~~
 > > {: .output}
 > {: .solution}
@@ -481,9 +504,9 @@ Let's use three of those functions to get some descriptive values about the data
 ~~~
 maxval, minval, stdval = numpy.max(data), numpy.min(data), numpy.std(data)
 
-print('maximum inflammation:', maxval)
-print('minimum inflammation:', minval)
-print('standard deviation:', stdval)
+print('max inflammation:', maxval)
+print('min inflammation:', minval)
+print('std deviation:', stdval)
 ~~~
 {: .language-python}
 
@@ -491,9 +514,9 @@ Here we've assigned the return value from `numpy.max(data)` to the variable `max
 from `numpy.min(data)` to `minval`, and so on.
 
 ~~~
-maximum inflammation: 20.0
-minimum inflammation: 0.0
-standard deviation: 4.61383319712
+max inflammation: 20.0
+min inflammation: 0.0
+std deviation: 4.61383319712
 ~~~
 {: .output}
 
@@ -513,7 +536,7 @@ So here, we're looking at the maximum inflammation across all days for the first
 
 What if we need the maximum inflammation for each patient over all days (as in the next diagram on the left) or the average for each day (as in the diagram on the right)? As the diagram below shows, we want to perform the operation across an axis:
 
-FIXME: ![Operations Across Axes](../fig/python-operations-across-axes.png)
+FIXME: Operations Across Axes image - /fig/python-operations-across-axes.png
 
 To support this functionality, most array functions allow us to specify the axis we want to work on. If we ask for the average across axis 0 (rows in our 2D example), we get:
 
@@ -549,7 +572,8 @@ print(numpy.mean(data, axis=0).shape)
 The expression `(40,)` tells us we have an N×1 vector, so this is the average inflammation per day for all patients. If we average across axis 1 (columns in our 2D example), we get:
 
 ~~~
-print(numpy.mean(data, axis=1))
+patients_avg = numpy.mean(data, axis=1)
+patients_avg
 ~~~
 {: .language-python}
 
@@ -565,13 +589,119 @@ print(numpy.mean(data, axis=1))
 
 Which is the average inflammation per patient across all days.
 
-## Managing N-dimensional Arrays
+> ## Change In Inflammation
+>
+> This patient data is _longitudinal_ in the sense that each row represents a
+> series of observations relating to one individual.  This means that
+> the change in inflammation over time is a meaningful concept.
+>
+> The `numpy.diff()` function takes a NumPy array and returns the
+> differences between two successive values along a specified axis.  For
+> example, a NumPy array that looks like this:
+>
+> ~~~
+> npdiff = numpy.array([ 0,  2,  5,  9, 14])
+> ~~~
+> {: .language-python}
+>
+> Calling `numpy.diff(npdiff)` would do the following calculations and
+> put the answers in another array.
+>
+> ~~~
+> [ 2 - 0, 5 - 2, 9 - 5, 14 - 9 ]
+> ~~~
+> {: .language-python}
+>
+> ~~~
+> numpy.diff(npdiff)
+> ~~~
+> {: .language-python}
+>
+> ~~~
+> array([2, 3, 4, 5])
+> ~~~
+> {: .language-python}
+>
+> Which axis would it make sense to use this function along?
+>
+> > ## Solution
+> > Since the row axis (0) is patients, it does not make sense to get the
+> > difference between two arbitrary patients. The column axis (1) is in
+> > days, so the difference is the change in inflammation -- a meaningful
+> > concept.
+> >
+> > ~~~
+> > numpy.diff(data, axis=1)
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+>
+> If the shape of an individual data file is `(60, 40)` (60 rows and 40
+> columns), what would the shape of the array be after you run the `diff()`
+> function and why?
+>
+> > ## Solution
+> > The shape will be `(60, 39)` because there is one fewer difference between
+> > columns than there are columns in the data.
+> {: .solution}
+>
+> How would you find the largest change in inflammation for each patient? Does
+> it matter if the change in inflammation is an increase or a decrease?
+>
+> > ## Solution
+> > By using the `numpy.max()` function after you apply the `numpy.diff()`
+> > function, you will get the largest difference between days.
+> >
+> > ~~~
+> > numpy.max(numpy.diff(data, axis=1), axis=1)
+> > ~~~
+> > {: .language-python}
+> >
+> > ~~~
+> > array([  7.,  12.,  11.,  10.,  11.,  13.,  10.,   8.,  10.,  10.,   7.,
+> >          7.,  13.,   7.,  10.,  10.,   8.,  10.,   9.,  10.,  13.,   7.,
+> >         12.,   9.,  12.,  11.,  10.,  10.,   7.,  10.,  11.,  10.,   8.,
+> >         11.,  12.,  10.,   9.,  10.,  13.,  10.,   7.,   7.,  10.,  13.,
+> >         12.,   8.,   8.,  10.,  10.,   9.,   8.,  13.,  10.,   7.,  10.,
+> >          8.,  12.,  10.,   7.,  12.])
+> > ~~~
+> > {: .language-python}
+> >
+> > If inflammation values *decrease* along an axis, then the difference from
+> > one element to the next will be negative. If
+> > you are interested in the **magnitude** of the change and not the
+> > direction, the `numpy.absolute()` function will provide that.
+> >
+> > Notice the difference if you get the largest _absolute_ difference
+> > between readings.
+> >
+> > ~~~
+> > numpy.max(numpy.absolute(numpy.diff(data, axis=1)), axis=1)
+> > ~~~
+> > {: .language-python}
+> >
+> > ~~~
+> > array([ 12.,  14.,  11.,  13.,  11.,  13.,  10.,  12.,  10.,  10.,  10.,
+> >         12.,  13.,  10.,  11.,  10.,  12.,  13.,   9.,  10.,  13.,   9.,
+> >         12.,   9.,  12.,  11.,  10.,  13.,   9.,  13.,  11.,  11.,   8.,
+> >         11.,  12.,  13.,   9.,  10.,  13.,  11.,  11.,  13.,  11.,  13.,
+> >         13.,  10.,   9.,  10.,  10.,   9.,   9.,  13.,  10.,   9.,  10.,
+> >         11.,  13.,  10.,  10.,  12.])
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
+
+## Multi-dimensional Arrays
+
+FIXME: show reshape(2, 30) to get patients_avg array split into two sub-arrays
 
 ### Populating Arrays with Stepwise Data
 
-### Multi-dimensional Arrays
+FIXME: add new dimension to inflammation data, populate it
 
 ### Dot Products
 
+FIXME: theoretical example from RSD materials
 
 {% include links.md %}
