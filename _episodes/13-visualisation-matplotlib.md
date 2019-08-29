@@ -25,6 +25,8 @@ there is no official plotting library, `matplotlib` is the _de facto_ standard.
 > {: .language-python}
 >
 > Again, note that you only have to execute this function once per notebook.
+>
+> Lines beginning with a single percent are not python code: they control how the notebook deals with python code. Lines beginning with two percents are "cell magics", that tell Jupyter notebook how to interpret the particular cell.
 {: .callout}
 
 
@@ -72,7 +74,21 @@ matplotlib.pyplot.show()
 
 FIXME: add Minimum Value Along The First Axis ../fig/01-numpy_75_3.png
 
-The maximum value rises and falls smoothly, while the minimum seems to be a step function.  Neither trend seems particularly likely, so either there's a mistake in our calculations or something is wrong with our data.  This insight would have been difficult to reach by examining the numbers themselves without visualization tools.
+The maximum value rises and falls smoothly, while the minimum seems to be a step function. Neither trend seems particularly likely, so either there's a mistake in our calculations or something is wrong with our data. This insight would have been difficult to reach by examining the numbers themselves without visualization tools.
+
+> ## Make Your Own Plot
+>
+> Create a plot showing the standard deviation (using `numpy.std`)
+> of the inflammation data for each day across all patients.
+>
+> > ## Solution
+> > ~~~
+> > std_plot = matplotlib.pyplot.plot(numpy.std(data, axis=0))
+> > matplotlib.pyplot.show()
+> > ~~~
+> > {: .language-python}
+> {: .solution}
+{: .challenge}
 
 ## Multiple Plots: Single Graph
 
@@ -153,20 +169,6 @@ all_graphs.savefig('overlay_graphs.png')
 {: .language-python}
 
 When we re-run the script, you should see a new `overlay_graphs.png` file in the same directory as the script.
-
-> ## Make Your Own Plot
->
-> Create a plot showing the standard deviation (`numpy.std`)
-> of the inflammation data for each day across all patients.
->
-> > ## Solution
-> > ~~~
-> > std_plot = matplotlib.pyplot.plot(numpy.std(data, axis=0))
-> > matplotlib.pyplot.show()
-> > ~~~
-> > {: .language-python}
-> {: .solution}
-{: .challenge}
 
 > ## Moving Plots Around
 >
