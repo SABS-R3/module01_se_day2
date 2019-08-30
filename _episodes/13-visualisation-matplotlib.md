@@ -1,13 +1,21 @@
 ---
 title: "Scientific Visualisation with Matplotlib"
-teaching: 0
-exercises: 0
+teaching: 60
+exercises: 20
 questions:
-- "Key question (FIXME)"
+- "How can I visualise my data?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Generate a heatmap of longitudinal, numerical tabular data."
+- "Create graphs of mean, minimum, and maximum characteristics over time from data."
+- "Create graphs showing multiple data characteristics within a single plot and separate plots."
+- "Save a generated graph to local storage."
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "Use `%matplotlib inline` to show our graphs immediately after creation within a Notebook."
+- "Use `matplotlib.pyplot.plot(data)` to generate a graph from `data`."
+- "Use `matplotlib.pyplot.show()` to display a generated graph."
+- "Matplotlib allows us to add multiple graphs within a single plot, or within separate plots using a `figure`."
+- "Set vertical axes labels using `set_ylabel('label')`."
+- "Save a generated graph using `graph.savefig('filename')."
 ---
 
 The mathematician Richard Hamming once said, "The purpose of computing is insight, not numbers," and
@@ -159,21 +167,9 @@ FIXME: add The Previous Plots as Subplots ../fig/01-numpy_80_0.png
 
 The call to `loadtxt` reads our data, and the rest of the program tells the plotting library how large we want the figure to be, that we're creating three subplots, what to draw for each one, and that we want a tight layout. (If we leave out that call to `fig.tight_layout()`, the graphs will actually be squeezed together more closely.)
 
-## Saving our Plots
-
-We can also save our plots to disk. Let's change our `overlay_graphs.py` script to do that, by adding the following just before we call `matplotlib.pyplot.show()`:
-
-~~~
-all_graphs.savefig('overlay_graphs.png')
-~~~
-{: .language-python}
-
-When we re-run the script, you should see a new `overlay_graphs.png` file in the same directory as the script.
-
 > ## Moving Plots Around
 >
-> Modify the program to display the three plots on top of one another
-> instead of side by side.
+> Modify the program to display the three plots vertically instead of horizontally.
 >
 > > ## Solution
 > > ~~~
@@ -206,5 +202,16 @@ When we re-run the script, you should see a new `overlay_graphs.png` file in the
 > > {: .language-python}
 > {: .solution}
 {: .challenge}
+
+## Saving our Plots
+
+We can also save our plots to disk. Let's change our `overlay_graphs.py` script to do that, by adding the following just before we call `matplotlib.pyplot.show()`:
+
+~~~
+all_graphs.savefig('overlay_graphs.png')
+~~~
+{: .language-python}
+
+When we re-run the script, you should see a new `overlay_graphs.png` file in the same directory as the script.
 
 {% include links.md %}
