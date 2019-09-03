@@ -95,6 +95,9 @@ print({2 * i for i in range(5)})
 
 ### Generator Comprehensions
 
+Generator comprehensions look very similar to the comprehensions we've seen previously.
+What happens if we try to use them in the same was as we did?
+
 ~~~
 print((2 * i for i in range(5)))
 ~~~
@@ -104,6 +107,8 @@ print((2 * i for i in range(5)))
 <generator object <genexpr> at 0x7efc21efcdd0>
 ~~~
 {: .output}
+
+Generator expressions are not evaluated until you iterate over them.
 
 ~~~
 for i in (2 * i for i in range(5)):
@@ -120,27 +125,9 @@ for i in (2 * i for i in range(5)):
 ~~~
 {: .output}
 
-~~~
-%%timeit
-l = [2*x for x in range(1000000)]
-~~~
-{: .language-python}
+Performance characteristics.
 
-~~~
-59.7 ms ± 372 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
-~~~
-{: .output}
-
-~~~
-%%timeit
-l = (2*x for x in range(1000000))
-~~~
-{: .language-python}
-
-~~~
-494 ns ± 11.5 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
-~~~
-{: .output}
+If we initialise and fully iterate over each comprehension, the time taken is very similar.
 
 ~~~
 %%timeit
@@ -167,6 +154,32 @@ for x in l:
 65.4 ms ± 2.3 ms per loop (mean ± std. dev. of 7 runs, 10 loops each)
 ~~~
 {: .output}
+
+If we initialise both a list and a generator comprehension and store them, but do not iterate over them, the generator is around 100,000x faster.
+
+~~~
+%%timeit
+l = [2*x for x in range(1000000)]
+~~~
+{: .language-python}
+
+~~~
+59.7 ms ± 372 µs per loop (mean ± std. dev. of 7 runs, 10 loops each)
+~~~
+{: .output}
+
+~~~
+%%timeit
+l = (2*x for x in range(1000000))
+~~~
+{: .language-python}
+
+~~~
+494 ns ± 11.5 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
+~~~
+{: .output}
+
+If we initialise both versions, but only partially iterate over each, then we can see the benefit of using a generator comprehension over a list comprehension.
 
 ~~~
 %%timeit
@@ -195,6 +208,7 @@ for x in l:
 988 ns ± 5.76 ns per loop (mean ± std. dev. of 7 runs, 1000000 loops each)
 ~~~
 {: .output}
+
 
 Performance in memory and time - use iPython timeit magic
 
