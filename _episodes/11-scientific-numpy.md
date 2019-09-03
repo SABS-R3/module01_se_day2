@@ -468,6 +468,9 @@ tripledata:
 > {: .solution}
 {: .challenge}
 
+### Dot Products
+
+FIXME: theoretical example from RSD materials * is not a dot product
 
 ### More Complex Operations
 
@@ -710,10 +713,6 @@ FIXME: show reshape(2, 30) to get patients_avg array split into two sub-arrays
 
 ### Populating Arrays with Stepwise Data
 
-FIXME: add new dimension to inflammation data, populate it
-
-### Dot Products
-
-FIXME: theoretical example from RSD materials
+FIXME: add new dimension to inflammation data, populate it, inc. broadcasting
 
 {% include links.md %}
