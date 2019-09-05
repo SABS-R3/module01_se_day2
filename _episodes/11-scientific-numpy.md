@@ -1,13 +1,24 @@
 ---
 title: "Scientific Programming with NumPy"
-teaching: 0
-exercises: 0
+teaching: 60
+exercises: 20
 questions:
-- "Key question (FIXME)"
+- "What are the differences between NumPy arrays and Python lists?"
+- "How do I extract subsets of data from a dataset?"
+- "How can I use NumPy to tell me basic statistical properties about my data?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Explain the key similarities and differences between NumPy arrays and Python lists."
+- "Select subsets of data from a NumPy array using Python slicing."
+- "Efficiently perform elementwise operations on data."
+- "Obtain basic characteristics of tabular data using NumPy's statistical functions."
+- "Increase the size of a NumPy array."
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "Processing NumPy arrays is generally much faster than processing Python lists."
+- "NumPy arrays have specialised capabilities to support complex mathematical operations, and are less flexible that Python lists."
+- "Slicing NumPy arrays returns a reference to the original dataset, not a copy of it like with Python lists."
+- "NumPy arrays only hold elements of a single data type and are generally fixed in size."
+- "Use `numpy.mean(array)`, `numpy.max(array)`, and `numpy.min(array)` to calculate simple statistics."
+- "Use `numpy.mean(array, axis=0)` or `numpy.mean(array, axis=1)` to calculate statistics across the specified axis."
 ---
 
 ## Introduction to NumPy
@@ -79,7 +90,7 @@ AttributeError: 'numpy.ndarray' object has no attribute 'append'
 ~~~
 {: .output}
 
-For NumPy arrays, you typically don't change the data size once you've defined your array, whereas for Python lists, you can do this efficiently. However, you get back lots of goodies in return...
+For NumPy arrays, you typically don't change the data size once you've defined your array, whereas for Python lists, you can do this efficiently. Also, NumPy arrays only contain one datatype. However, you get back lots of goodies in return...
 
 ## Elementwise Operations
 
@@ -457,6 +468,9 @@ tripledata:
 > {: .solution}
 {: .challenge}
 
+### Dot Products
+
+FIXME: theoretical example from RSD materials * is not a dot product
 
 ### More Complex Operations
 
@@ -650,7 +664,8 @@ Which is the average inflammation per patient across all days.
 >
 > > ## Solution
 > > By using the `numpy.max()` function after you apply the `numpy.diff()`
-> > function, you will get the largest difference between days.
+> > function, you will get the largest difference between days. We can *functionally
+> > compose* these together.
 > >
 > > ~~~
 > > numpy.max(numpy.diff(data, axis=1), axis=1)
@@ -698,10 +713,6 @@ FIXME: show reshape(2, 30) to get patients_avg array split into two sub-arrays
 
 ### Populating Arrays with Stepwise Data
 
-FIXME: add new dimension to inflammation data, populate it
-
-### Dot Products
-
-FIXME: theoretical example from RSD materials
+FIXME: add new dimension to inflammation data, populate it, inc. broadcasting
 
 {% include links.md %}
