@@ -17,8 +17,8 @@ keypoints:
 - "Use `matplotlib.pyplot.show()` to display a generated graph."
 - "Matplotlib allows us to add multiple graphs within a single plot, or within separate plots using a `figure`."
 - "Set vertical axes labels using `set_ylabel('label')`."
-- "Save a generated graph using `graph.savefig('filename')."
-- "Use glob.glob(pattern) to create a list of files whose names match a pattern."
+- "Save a generated graph using `graph.savefig('filename')`."
+- "Use `glob.glob(pattern)` to create a list of files whose names match a pattern."
 - "Use `*` in a pattern to match zero or more characters, and ? to match any single character."
 ---
 
