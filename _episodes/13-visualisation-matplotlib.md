@@ -1,7 +1,7 @@
 ---
 title: "Scientific Visualisation with Matplotlib"
-teaching: 60
-exercises: 20
+teaching: 50
+exercises: 30
 questions:
 - "How can I visualise my data?"
 objectives:
@@ -19,7 +19,7 @@ keypoints:
 - "Set vertical axes labels using `set_ylabel('label')`."
 - "Save a generated graph using `graph.savefig('filename')`."
 - "Use `glob.glob(pattern)` to create a list of files whose names match a pattern."
-- "Use `*` in a pattern to match zero or more characters, and ? to match any single character."
+- "Use `*` in a pattern to match zero or more characters, and `?` to match any single character."
 ---
 
 The mathematician Richard Hamming once said, "The purpose of computing is insight, not numbers," and
