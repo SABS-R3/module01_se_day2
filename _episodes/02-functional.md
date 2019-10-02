@@ -24,5 +24,15 @@ keypoints:
 
 ## Recursion
 
+~~~
+def fibonacci_iterative(n):
+    a = 0
+    b = 1
+    for _ in range(n):
+        
+
+~~~
+{: .language-python}
+
 {% include links.md %}
 

@@ -229,6 +229,7 @@ def decorate_hello(fun):
     
     return inner
 
+@decorate_hello
 def say_world():
     print('World!')
 
