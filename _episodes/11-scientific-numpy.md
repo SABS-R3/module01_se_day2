@@ -23,7 +23,7 @@ keypoints:
 
 ## Introduction to NumPy
 
-See topic [slides](../slides/11-scientific-numpy.html).
+See slides at [slides](../slides/11-scientific-numpy.html).
 
 ## NumPy Arrays vs Python Lists
 
