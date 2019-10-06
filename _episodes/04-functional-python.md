@@ -12,34 +12,10 @@ keypoints:
 
 ## The Functional Paradigm
 
-## Lambda Functions
-
-## Map, Filter, Reduce
-
-~~~
-from functools import reduce
-from operator import add
-
-l = [1, 2, 3]
-
-print(reduce(add, l))
-
-print(list(filter(lambda x: x > 1, l)))
-
-print(list(map(lambda x: x + 1, l))
-~~~
-{: .language-python}
-
-~~~
-6
-[2, 3]
-[2, 3, 4]
-~~~
-{: .output}
 
 ## Comprehensions
 
-Comprehensions are a more **Pythonic** way of doing these sorts of operations.
+Comprehensions are a more **Pythonic** way to do some of these operations.
 
 ### List Comprehensions
 
