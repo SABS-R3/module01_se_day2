@@ -28,8 +28,7 @@ It belongs to a different branch in the history of paradigms, the Declarative br
 
 ## Side Effect and Pure Functions
 
-There's nothing particularly special about the behaviour of functions in Python, almost any valid code can be put inside a function to be called from elsewhere.
-This includes defining 
+There's nothing particularly special about the behaviour of functions in Python, almost any valid code can be put inside a function to be called from elsewhere (even defining classes or other functions).
 This means that each function can do anything the Python language can do.
 
 In well designed code, a function should only be responsible for one task (see: Single Responsibility Principle).
@@ -254,6 +253,9 @@ print((lambda x: x + 1)(1))
 One of the main applications of functional programming currently is the Map, Filter, Reduce model of data processing, usually refered to as **MapReduce**.
 This model is particularly useful for the processing and analysis of **Big Data** using tools such as Spark or Hadoop.
 
+Note that the `map` and `filter` functions in Python are use **lazy evaluation**.
+This means that values in an iterable collection are not actually calculated until you need them.
+We'll explain some of the implications of this a little later, but for now, we'll just use `list()` to convert the results to a normal list.
 
 ~~~
 l = [1, 2, 3]
@@ -351,7 +353,7 @@ print(reduce((lambda a, b: a + b), l))
 > {: .solution}
 >
 > Now let's assume we're reading in these numbers from an input file, so they arrive as a list of strings.
-> Extend your function so that, as well as the previous tests, it also passes:
+> Modify your function so that it passes the following tests:
 >
 > ~~~
 > print(sum_of_squares(['1', '2', '3']))
@@ -376,6 +378,7 @@ print(reduce((lambda a, b: a + b), l))
 > >     return reduce(lambda a, b: a + b, squares)
 > > ~~~
 > > {: .language-python}
+> >
 > {: .solution}
 >
 > Finally, like comments in Python, we'd like it to be possible for users to comment out numbers in the input file the give to our program.
