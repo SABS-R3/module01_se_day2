@@ -140,7 +140,7 @@ Let's take a more in-depth look at our CSV inflammation dataset we looked at pre
 As before, we can use NumPy to load our dataset into a Python variable:
 
 ~~~
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+data = numpy.loadtxt(fname='../data/inflammation-01.csv', delimiter=',')
 data
 ~~~
 {: .language-python}
