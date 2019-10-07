@@ -550,7 +550,7 @@ So here, we're looking at the maximum inflammation across all days for the first
 
 What if we need the maximum inflammation for each patient over all days (as in the next diagram on the left) or the average for each day (as in the diagram on the right)? As the diagram below shows, we want to perform the operation across an axis:
 
-FIXME: Operations Across Axes image - /fig/python-operations-across-axes.png
+![operations-across-axes](../fig/11-python-operations-across-axes.png)
 
 To support this functionality, most array functions allow us to specify the axis we want to work on. If we ask for the average across axis 0 (rows in our 2D example), we get:
 

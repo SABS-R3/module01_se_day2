@@ -53,7 +53,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add Heatmap of the Data ../fig/01-numpy_71_0.png
+![inflammation-heatmap-imshow](../fig/13-inflammation-01-heatmap-imshow.svg)
 
 Blue pixels in this heat map represent low values, while yellow pixels represent high values. As we can see, inflammation rises and falls over a 40-day period.
 
@@ -66,7 +66,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add Average Inflammation Over Time ../fig/01-numpy_73_0.png
+![inflammation-average-imshow](../fig/13-inflammation-01-average.svg)
 
 Here, we have put the average per day across all patients in the variable `ave_inflammation`, then asked `matplotlib.pyplot` to create and display a line graph of those values.  The result is a roughly linear rise and fall, which is suspicious: we might instead expect a sharper rise and slower fall.  Let's have a look at two other statistics:
 
@@ -76,7 +76,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add Maximum Value Along The First Axis ../fig/01-numpy_75_1.png
+![inflammation-maximum-imshow](../fig/13-inflammation-01-maximum.svg)
 
 ~~~
 min_plot = matplotlib.pyplot.plot(numpy.min(data, axis=0))
@@ -84,7 +84,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add Minimum Value Along The First Axis ../fig/01-numpy_75_3.png
+![inflammation-minimum-imshow](../fig/13-inflammation-01-minimum.svg)
 
 The maximum value rises and falls smoothly, while the minimum seems to be a step function. Neither trend seems particularly likely, so either there's a mistake in our calculations or something is wrong with our data. This insight would have been difficult to reach by examining the numbers themselves without visualization tools.
 
@@ -127,7 +127,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add generated combined plot
+![inflammation-combined-imshow](../fig/13-inflammation-01-combined.png)
 
 
 ## Multiple Plots: Multiple Graphs
@@ -167,7 +167,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add The Previous Plots as Subplots ../fig/01-numpy_80_0.png
+![inflammation-separate-imshow](../fig/13-inflammation-01-separate.png)
 
 The call to `loadtxt` reads our data, and the rest of the program tells the plotting library how large we want the figure to be, that we're creating three subplots, what to draw for each one, and that we want a tight layout. (If we leave out that call to `fig.tight_layout()`, the graphs will actually be squeezed together more closely.)
 
@@ -220,7 +220,7 @@ When we re-run the script, you should see a new `overlay_graphs.png` file in the
 
 ## Dealing with Multiple Datasets
 
-We also have other inflammation datasets, located in FIXME. Let's try to generate and save visualisations for each of these datasets so we can compare them against each other, to increase our confidence that we have sensible datasets.
+We also have other inflammation datasets, located in the `data` directory. Let's try to generate and save visualisations for each of these datasets so we can compare them against each other, to increase our confidence that we have sensible datasets.
 
 First, we need to have a way of determining a list of all our inflammation data files. Their filenames all follow the pattern 'inflammation-XX.csv`, where `XX` refers to the number of that dataset. We can use the `glob` library here to help us get these filenames.
 
