@@ -470,7 +470,22 @@ tripledata:
 
 ### Dot Products
 
-FIXME: theoretical example from RSD materials * is not a dot product
+You can also do dot products of NumPy arrays:
+
+~~~
+a = numpy.array([[1, 2], [3, 4]])
+b = numpy.array([[5, 6], [7, 8]])
+
+numpy.dot(a, b)
+~~~
+{: .language-python}
+
+~~~
+array([[19, 22],
+       [43, 50]])
+~~~
+{: .output}
+
 
 ### More Complex Operations
 
