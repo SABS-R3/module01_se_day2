@@ -44,16 +44,18 @@ there is no official plotting library, `matplotlib` is the _de facto_ standard.
 
 ## Visualising our Inflammation Data
 
-First, we will import the `pyplot` module from `matplotlib` and use two of its functions to create and display a heat map of our data:
+First, we will import the `pyplot` module from `matplotlib` and use two of its functions to create and display a heat map of our data (you won't need the line beginning `data =` if you're continuing directly after the previous lesson and already have it loaded):
 
 ~~~
 import matplotlib.pyplot
+
+data = numpy.loadtxt(fname='../data/inflammation-01.csv', delimiter=',')
 image = matplotlib.pyplot.imshow(data)
 matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add Heatmap of the Data ../fig/01-numpy_71_0.png
+![inflammation-heatmap-imshow](../fig/13-inflammation-01-heatmap-imshow.svg)
 
 Blue pixels in this heat map represent low values, while yellow pixels represent high values. As we can see, inflammation rises and falls over a 40-day period.
 
@@ -66,7 +68,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add Average Inflammation Over Time ../fig/01-numpy_73_0.png
+![inflammation-average-imshow](../fig/13-inflammation-01-average.svg)
 
 Here, we have put the average per day across all patients in the variable `ave_inflammation`, then asked `matplotlib.pyplot` to create and display a line graph of those values.  The result is a roughly linear rise and fall, which is suspicious: we might instead expect a sharper rise and slower fall.  Let's have a look at two other statistics:
 
@@ -76,7 +78,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add Maximum Value Along The First Axis ../fig/01-numpy_75_1.png
+![inflammation-maximum-imshow](../fig/13-inflammation-01-maximum.svg)
 
 ~~~
 min_plot = matplotlib.pyplot.plot(numpy.min(data, axis=0))
@@ -84,7 +86,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add Minimum Value Along The First Axis ../fig/01-numpy_75_3.png
+![inflammation-minimum-imshow](../fig/13-inflammation-01-minimum.svg)
 
 The maximum value rises and falls smoothly, while the minimum seems to be a step function. Neither trend seems particularly likely, so either there's a mistake in our calculations or something is wrong with our data. This insight would have been difficult to reach by examining the numbers themselves without visualization tools.
 
@@ -114,7 +116,7 @@ Given we have a stacked set of graphs in a single figure, we use `legend()` on o
 import numpy
 import matplotlib.pyplot
 
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+data = numpy.loadtxt(fname='../data/inflammation-01.csv', delimiter=',')
 
 all_graphs, all_graphs_axes = matplotlib.pyplot.subplots()
 
@@ -127,7 +129,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add generated combined plot
+![inflammation-combined-imshow](../fig/13-inflammation-01-combined.png)
 
 
 ## Multiple Plots: Multiple Graphs
@@ -144,7 +146,7 @@ Each subplot is stored in a different variable (`axes1`, `axes2`, `axes3`). Once
 import numpy
 import matplotlib.pyplot
 
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+data = numpy.loadtxt(fname='../data/inflammation-01.csv', delimiter=',')
 
 fig = matplotlib.pyplot.figure(figsize=(10.0, 3.0))
 
@@ -167,7 +169,7 @@ matplotlib.pyplot.show()
 ~~~
 {: .language-python}
 
-FIXME: add The Previous Plots as Subplots ../fig/01-numpy_80_0.png
+![inflammation-separate-imshow](../fig/13-inflammation-01-separate.png)
 
 The call to `loadtxt` reads our data, and the rest of the program tells the plotting library how large we want the figure to be, that we're creating three subplots, what to draw for each one, and that we want a tight layout. (If we leave out that call to `fig.tight_layout()`, the graphs will actually be squeezed together more closely.)
 
@@ -180,7 +182,7 @@ The call to `loadtxt` reads our data, and the rest of the program tells the plot
 > > import numpy
 > > import matplotlib.pyplot
 > >
-> > data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+> > data = numpy.loadtxt(fname='../data/inflammation-01.csv', delimiter=',')
 > >
 > > # change figsize (swap width and height)
 > > fig = matplotlib.pyplot.figure(figsize=(3.0, 10.0))
@@ -220,11 +222,11 @@ When we re-run the script, you should see a new `overlay_graphs.png` file in the
 
 ## Dealing with Multiple Datasets
 
-We also have other inflammation datasets, located in FIXME. Let's try to generate and save visualisations for each of these datasets so we can compare them against each other, to increase our confidence that we have sensible datasets.
+We also have other inflammation datasets, located in the `data` directory. Let's try to generate and save visualisations for each of these datasets so we can compare them against each other, to increase our confidence that we have sensible datasets.
 
-First, we need to have a way of determining a list of all our inflammation data files. Their filenames all follow the pattern 'inflammation-XX.csv`, where `XX` refers to the number of that dataset. We can use the `glob` library here to help us get these filenames.
+First, we need to have a way of determining a list of all our inflammation data files. Their filenames all follow the pattern `inflammation-XX.csv`, where `XX` refers to the number of that dataset. We can use the `glob` library here to help us get these filenames.
 
-The glob library contains a function, also called glob, that finds files and directories whose names match a pattern. We provide those patterns as strings: the character `*` matches zero or more characters, while `?` matches any one character. We can use this to get the names of all the CSV files in the current directory:
+The glob library contains a function, also called glob, that finds files and directories whose names match a pattern. We provide those patterns as strings: the character `*` matches zero or more characters, while `?` matches any one character. We can use this to get the names of all the CSV files in the `data` directory which resides in the directory above like so:
 
 ~~~
 import glob
@@ -236,28 +238,28 @@ print(filenames)
 Now, `glob()` returns a list of matching filenames (and directory paths) in arbitrary order, so we use the inbuilt `sorted()` Python function to sort this for us:
 
 ~~~
-[['inflammation-01.csv', 'inflammation-02.csv', 'inflammation-03.csv', 'inflammation-04.csv', 'inflammation-05.csv', 'inflammation-06.csv', 'inflammation-07.csv', 'inflammation-08.csv', 'inflammation-09.csv', 'inflammation-10.csv', 'inflammation-11.csv', 'inflammation-12.csv']
+['../data/inflammation-01.csv', '../data/inflammation-02.csv', '../data/inflammation-03.csv', '../data/inflammation-04.csv', '../data/inflammation-05.csv', '../data/inflammation-06.csv', '../data/inflammation-07.csv', '../data/inflammation-08.csv', '../data/inflammation-09.csv', '../data/inflammation-10.csv', '../data/inflammation-11.csv', '../data/inflammation-12.csv']
 ~~~
 {: .output}
 
 This means we can loop over it to do something with each filename in turn.
 
-We'd like to save each of the generated plots using the pattern `inflammation-XX.png`. Each of the filenames we have in `filenames` has a `.csv.` on the end. So how to go about replacing the file extension with a `.png` one? We can use the `os` library to do some file name manipulation for us, e.g.
+We'd like to save each of the generated plots using the pattern `inflammation-XX.png`. Each of the filenames we have in `filenames` has a `.csv.` on the end. So how to go about replacing the file extension with a `.png` one? We can use the `os` library to extract the file path for us, e.g.
 
 ~~~
 import os
 
-filename = 'inflammation-XX.csv'
+filename = '../data/inflammation-01.csv'
 base = os.path.splitext(filename)[0]
-new_filename = os.path.join(base, '.png')
+new_filename = base + '.png'
 print(new_filename)
 ~~~
 {: .language-python}
 
-`os.path.splitext()` splits a filename into its path/filename, and file extension components. So we just append the `.png` extension to the path/filename part:
+`os.path.splitext()` splits a filename into its path/filename, and file extension components. So we just append the `.png` extension to the path/filename part, and get:
 
 ~~~
-'inflammation-XX.png'
+'../data/inflammation-01.png'
 ~~~
 {: .output}
 
@@ -271,7 +273,7 @@ print(new_filename)
 > > import numpy
 > > import matplotlib.pyplot
 > >
-> > filenames = sorted(glob.glob('inflammation*.csv'))
+> > filenames = sorted(glob.glob('../data/inflammation*.csv'))
 > > for f in filenames:
 > >     data = numpy.loadtxt(fname=f, delimiter=',')
 > >
@@ -324,7 +326,7 @@ print(new_filename)
 > >
 > >     return fig
 > >
-> > filenames = sorted(glob.glob('inflammation*.csv'))
+> > filenames = sorted(glob.glob('../data/inflammation*.csv'))
 > > for f in filenames:
 > >     data = numpy.loadtxt(fname=f, delimiter=',')
 > >

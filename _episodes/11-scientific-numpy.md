@@ -140,7 +140,7 @@ Let's take a more in-depth look at our CSV inflammation dataset we looked at pre
 As before, we can use NumPy to load our dataset into a Python variable:
 
 ~~~
-data = numpy.loadtxt(fname='inflammation-01.csv', delimiter=',')
+data = numpy.loadtxt(fname='../data/inflammation-01.csv', delimiter=',')
 data
 ~~~
 {: .language-python}
@@ -470,7 +470,22 @@ tripledata:
 
 ### Dot Products
 
-FIXME: theoretical example from RSD materials * is not a dot product
+You can also do dot products of NumPy arrays:
+
+~~~
+a = numpy.array([[1, 2], [3, 4]])
+b = numpy.array([[5, 6], [7, 8]])
+
+numpy.dot(a, b)
+~~~
+{: .language-python}
+
+~~~
+array([[19, 22],
+       [43, 50]])
+~~~
+{: .output}
+
 
 ### More Complex Operations
 
@@ -550,7 +565,7 @@ So here, we're looking at the maximum inflammation across all days for the first
 
 What if we need the maximum inflammation for each patient over all days (as in the next diagram on the left) or the average for each day (as in the diagram on the right)? As the diagram below shows, we want to perform the operation across an axis:
 
-FIXME: Operations Across Axes image - /fig/python-operations-across-axes.png
+![operations-across-axes](../fig/11-python-operations-across-axes.png)
 
 To support this functionality, most array functions allow us to specify the axis we want to work on. If we ask for the average across axis 0 (rows in our 2D example), we get:
 
