@@ -1,7 +1,7 @@
 ---
 title: "Functional Programming"
-teaching: 0
-exercises: 0
+teaching: 65
+exercises: 25
 questions:
 - "Key question (FIXME)"
 objectives:
