@@ -367,7 +367,7 @@ print(reduce((lambda a, b: a + b), l))
 > ~~~
 > {: .output}
 >
-> > # Solution
+> > ## Solution
 > >
 > > ~~~
 > > from functools import reduce
@@ -398,7 +398,7 @@ print(reduce((lambda a, b: a + b), l))
 > ~~~
 > {: .output}
 >
-> > # Solution
+> > ## Solution
 > >
 > > ~~~
 > > from functools import reduce
