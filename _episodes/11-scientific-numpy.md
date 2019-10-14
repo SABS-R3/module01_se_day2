@@ -11,7 +11,7 @@ objectives:
 - "Select subsets of data from a NumPy array using Python slicing."
 - "Efficiently perform elementwise operations on data."
 - "Obtain basic characteristics of tabular data using NumPy's statistical functions."
-- "Increase the size of a NumPy array."
+- "Apply operations to differently sized arrays."
 keypoints:
 - "Processing NumPy arrays is generally much faster than processing Python lists."
 - "NumPy arrays have specialised capabilities to support complex mathematical operations, and are less flexible that Python lists."
@@ -19,6 +19,8 @@ keypoints:
 - "NumPy arrays only hold elements of a single data type and are generally fixed in size."
 - "Use `numpy.mean(array)`, `numpy.max(array)`, and `numpy.min(array)` to calculate simple statistics."
 - "Use `numpy.mean(array, axis=0)` or `numpy.mean(array, axis=1)` to calculate statistics across the specified axis."
+- "Use `.reshape()` to resize a NumPy array to a different set of dimensions."
+- "Broadcasting allows you to apply an operation to two arrays of different shape, repeating the data in an array of a one-long dimension to match the larger array."
 ---
 
 ## Introduction to NumPy
@@ -37,6 +39,8 @@ my_array = np.array(range(5))
 my_array
 ~~~
 {: .language-python}
+
+Note here we are importing the NumPy module as `np`, an established convention for using NumPy which means we can refer to NumPy using `np.` instead of the slightly more laborious `numpy.`.
 
 ~~~
 array([0, 1, 2, 3, 4])
@@ -125,8 +129,8 @@ That took a while! In NumPy we replicate this by doing:
 
 ~~~
 %%timeit
-import numpy
-array = numpy.zeros((10000, 10000))
+import numpy as np
+array = np.zeros((10000, 10000))
 array = array + 10
 ~~~
 {: .language-python}
@@ -140,7 +144,7 @@ Let's take a more in-depth look at our CSV inflammation dataset we looked at pre
 As before, we can use NumPy to load our dataset into a Python variable:
 
 ~~~
-data = numpy.loadtxt(fname='../data/inflammation-01.csv', delimiter=',')
+data = np.loadtxt(fname='../data/inflammation-01.csv', delimiter=',')
 data
 ~~~
 {: .language-python}
@@ -403,15 +407,15 @@ tripledata:
 > ~~~
 > import numpy
 >
-> A = numpy.array([[1,2,3], [4,5,6], [7,8,9]])
+> A = np.array([[1,2,3], [4,5,6], [7,8,9]])
 > print('A = ')
 > print(A)
 >
-> B = numpy.hstack([A, A])
+> B = np.hstack([A, A])
 > print('B = ')
 > print(B)
 >
-> C = numpy.vstack([A, A])
+> C = np.vstack([A, A])
 > print('C = ')
 > print(C)
 > ~~~
@@ -450,7 +454,7 @@ tripledata:
 > > vector).
 > >
 > > ~~~
-> > D = numpy.hstack([data[:, :1], data[:, -1:]])
+> > D = np.hstack([data[:, :1], data[:, -1:]])
 > > print('D = ')
 > > print(D)
 > > ~~~
@@ -473,10 +477,10 @@ tripledata:
 You can also do dot products of NumPy arrays:
 
 ~~~
-a = numpy.array([[1, 2], [3, 4]])
-b = numpy.array([[5, 6], [7, 8]])
+a = np.array([[1, 2], [3, 4]])
+b = np.array([[5, 6], [7, 8]])
 
-numpy.dot(a, b)
+np.dot(a, b)
 ~~~
 {: .language-python}
 
@@ -492,7 +496,7 @@ array([[19, 22],
 Often, we want to do more than add, subtract, multiply, and divide array elements. NumPy knows how to do more complex operations, too. If we want to find the average inflammation for all patients on all days, for example, we can ask NumPy to compute `data`'s mean value:
 
 ~~~
-print(numpy.mean(data))
+print(np.mean(data))
 ~~~
 {: .language-python}
 
@@ -531,7 +535,7 @@ NumPy has lots of useful functions that take an array as input.
 Let's use three of those functions to get some descriptive values about the dataset. We'll also use multiple assignment, a convenient Python feature that will enable us to do this all in one line.
 
 ~~~
-maxval, minval, stdval = numpy.max(data), numpy.min(data), numpy.std(data)
+maxval, minval, stdval = np.max(data), np.min(data), np.std(data)
 
 print('max inflammation:', maxval)
 print('min inflammation:', minval)
@@ -539,8 +543,8 @@ print('std deviation:', stdval)
 ~~~
 {: .language-python}
 
-Here we've assigned the return value from `numpy.max(data)` to the variable `maxval`, the value
-from `numpy.min(data)` to `minval`, and so on.
+Here we've assigned the return value from `np.max(data)` to the variable `maxval`, the value
+from `np.min(data)` to `minval`, and so on.
 
 ~~~
 max inflammation: 20.0
@@ -552,7 +556,7 @@ std deviation: 4.61383319712
 When analyzing data, though, we often want to look at variations in statistical values, such as the maximum inflammation per patient or the average inflammation per day. One way to do this is to create a new temporary array of the data we want, then ask it to do the calculation:
 
 ~~~
-numpy.max(data[0, :])
+np.max(data[0, :])
 ~~~
 {: .language-python}
 
@@ -570,7 +574,7 @@ What if we need the maximum inflammation for each patient over all days (as in t
 To support this functionality, most array functions allow us to specify the axis we want to work on. If we ask for the average across axis 0 (rows in our 2D example), we get:
 
 ~~~
-print(numpy.mean(data, axis=0))
+print(np.mean(data, axis=0))
 ~~~
 {: .language-python}
 
@@ -589,7 +593,7 @@ print(numpy.mean(data, axis=0))
 As a quick check, we can ask this array what its shape is:
 
 ~~~
-print(numpy.mean(data, axis=0).shape)
+print(np.mean(data, axis=0).shape)
 ~~~
 {: .language-python}
 
@@ -601,7 +605,7 @@ print(numpy.mean(data, axis=0).shape)
 The expression `(40,)` tells us we have an N×1 vector, so this is the average inflammation per day for all patients. If we average across axis 1 (columns in our 2D example), we get:
 
 ~~~
-patients_avg = numpy.mean(data, axis=1)
+patients_avg = np.mean(data, axis=1)
 patients_avg
 ~~~
 {: .language-python}
@@ -624,16 +628,16 @@ Which is the average inflammation per patient across all days.
 > series of observations relating to one individual.  This means that
 > the change in inflammation over time is a meaningful concept.
 >
-> The `numpy.diff()` function takes a NumPy array and returns the
+> The `np.diff()` function takes a NumPy array and returns the
 > differences between two successive values along a specified axis.  For
 > example, a NumPy array that looks like this:
 >
 > ~~~
-> npdiff = numpy.array([ 0,  2,  5,  9, 14])
+> npdiff = np.array([ 0,  2,  5,  9, 14])
 > ~~~
 > {: .language-python}
 >
-> Calling `numpy.diff(npdiff)` would do the following calculations and
+> Calling `np.diff(npdiff)` would do the following calculations and
 > put the answers in another array.
 >
 > ~~~
@@ -642,7 +646,7 @@ Which is the average inflammation per patient across all days.
 > {: .language-python}
 >
 > ~~~
-> numpy.diff(npdiff)
+> np.diff(npdiff)
 > ~~~
 > {: .language-python}
 >
@@ -660,7 +664,7 @@ Which is the average inflammation per patient across all days.
 > > concept.
 > >
 > > ~~~
-> > numpy.diff(data, axis=1)
+> > np.diff(data, axis=1)
 > > ~~~
 > > {: .language-python}
 > {: .solution}
@@ -678,12 +682,12 @@ Which is the average inflammation per patient across all days.
 > it matter if the change in inflammation is an increase or a decrease?
 >
 > > ## Solution
-> > By using the `numpy.max()` function after you apply the `numpy.diff()`
+> > By using the `np.max()` function after you apply the `np.diff()`
 > > function, you will get the largest difference between days. We can *functionally
 > > compose* these together.
 > >
 > > ~~~
-> > numpy.max(numpy.diff(data, axis=1), axis=1)
+> > np.max(np.diff(data, axis=1), axis=1)
 > > ~~~
 > > {: .language-python}
 > >
@@ -700,13 +704,13 @@ Which is the average inflammation per patient across all days.
 > > If inflammation values *decrease* along an axis, then the difference from
 > > one element to the next will be negative. If
 > > you are interested in the **magnitude** of the change and not the
-> > direction, the `numpy.absolute()` function will provide that.
+> > direction, the `np.absolute()` function will provide that.
 > >
 > > Notice the difference if you get the largest _absolute_ difference
 > > between readings.
 > >
 > > ~~~
-> > numpy.max(numpy.absolute(numpy.diff(data, axis=1)), axis=1)
+> > np.max(np.absolute(np.diff(data, axis=1)), axis=1)
 > > ~~~
 > > {: .language-python}
 > >
@@ -724,10 +728,200 @@ Which is the average inflammation per patient across all days.
 
 ## Multi-dimensional Arrays
 
-FIXME: show reshape(2, 30) to get patients_avg array split into two sub-arrays
+NumPy's true power comes from multi-dimensional arrays:
 
-### Populating Arrays with Stepwise Data
+~~~
+np.zeros([3, 4, 2])  # 3 arrays with 4 rows and 2 columns each
+~~~
+{: .language-python}
 
-FIXME: add new dimension to inflammation data, populate it, inc. broadcasting
+~~~
+array([[[ 0.,  0.],
+        [ 0.,  0.],
+        [ 0.,  0.],
+        [ 0.,  0.]],
+
+       [[ 0.,  0.],
+        [ 0.,  0.],
+        [ 0.,  0.],
+        [ 0.,  0.]],
+
+       [[ 0.,  0.],
+        [ 0.,  0.],
+        [ 0.,  0.],
+        [ 0.,  0.]]])
+~~~
+{: .output}
+
+Unlike a list-of-lists in Python, we can reshape arrays. Let's split our inflammation dataset in half, so that our single 2-dimensional array of 60 patients over 40 days becomes an 3-dimensional array of two arrays of 30 patients over 40 days (essentially splitting the patients into two groups):
+
+~~~
+split_data = data.reshape(2, 30, 40)
+split_data
+~~~
+{: .language-python}
+
+By doing this, the original array data gets *reshaped* into the new array dimensions:
+
+~~~
+array([[[0., 0., 1., ..., 3., 0., 0.],
+        [0., 1., 2., ..., 1., 0., 1.],
+        [0., 1., 1., ..., 2., 1., 1.],
+        ...,
+        [0., 0., 1., ..., 3., 2., 1.],
+        [0., 0., 2., ..., 3., 1., 0.],
+        [0., 0., 0., ..., 1., 0., 1.]],
+
+       [[0., 1., 1., ..., 3., 2., 1.],
+        [0., 0., 2., ..., 3., 0., 0.],
+        [0., 1., 2., ..., 0., 2., 1.],
+        ...,
+        [0., 1., 1., ..., 1., 1., 1.],
+        [0., 0., 0., ..., 0., 2., 0.],
+        [0., 0., 1., ..., 1., 1., 0.]]])
+~~~
+{: .output}
+
+And then, for example to get all inflammation data for the 10th patient in the first patient group:
+
+~~~
+split_data([1, 10])
+~~~
+{: .language-python}
+
+~~~
+array([ 0.,  1.,  2.,  2.,  4.,  3.,  1.,  4.,  8.,  9.,  5., 10., 10.,
+        3.,  4.,  6.,  7., 11., 16.,  6., 14.,  9., 11., 10., 10.,  7.,
+       10.,  8.,  8.,  4.,  5.,  8.,  4.,  4.,  5.,  2.,  4.,  1.,  1.,
+        0.])
+~~~
+{: .output}
+
+### Broadcasting
+
+This is another really powerful feature of NumPy.
+
+By default, array operations are element-by-element:
+
+~~~
+np.arange(5) * np.arange(5)
+~~~
+{: .language-python}
+
+~~~
+array([ 0,  1,  4,  9, 16])
+~~~
+{: .output}
+
+If we multiply arrays with non-matching shapes we get an error:
+
+~~~
+np.arange(5) * np.arange(6)
+~~~
+{: .language-python}
+
+~~~
+ValueError                                Traceback (most recent call last)
+<ipython-input-51-d87da4b8a218> in <module>()
+----> 1 np.arange(5) * np.arange(6)
+
+ValueError: operands could not be broadcast together with shapes (5,) (6,)
+~~~
+{: .output}
+
+Or with a multi-dimensional array:
+
+~~~
+np.zeros([2,3]) * np.zeros([2,4])
+~~~
+{: .language-python}
+
+~~~
+ValueError                                Traceback (most recent call last)
+<ipython-input-52-b6b30bdbcb53> in <module>()
+----> 1 np.zeros([2,3]) * np.zeros([2,4])
+
+ValueError: operands could not be broadcast together with shapes (2,3) (2,4)
+~~~
+{: .output}
+
+Arrays must match in all dimensions in order to be compatible:
+
+~~~
+np.ones([3, 3]) * np.ones([3, 3]) # Note elementwise multiply, *not* matrix multiply.
+~~~
+{: .language-python}
+
+~~~
+array([[ 1.,  1.,  1.],
+       [ 1.,  1.,  1.],
+       [ 1.,  1.,  1.]])
+~~~
+{: .output}
+
+**Except**, that if one array has any Dimension size of 1, then the data is automatically REPEATED to match the other dimension. This is known as *broadcasting*.
+
+So, let's consider a subset of our inflammation data (just so we can easily see what's going on):
+
+~~~
+subset = data[:10, :10]
+subset
+~~~
+{: .language-python}
+
+~~~
+array([[0., 0., 1., 3., 1., 2., 4., 7., 8., 3.],
+       [0., 1., 2., 1., 2., 1., 3., 2., 2., 6.],
+       [0., 1., 1., 3., 3., 2., 6., 2., 5., 9.],
+       [0., 0., 2., 0., 4., 2., 2., 1., 6., 7.],
+       [0., 1., 1., 3., 3., 1., 3., 5., 2., 4.],
+       [0., 0., 1., 2., 2., 4., 2., 1., 6., 4.],
+       [0., 0., 2., 2., 4., 2., 2., 5., 5., 8.],
+       [0., 0., 1., 2., 3., 1., 2., 3., 5., 3.],
+       [0., 0., 0., 3., 1., 5., 6., 5., 5., 8.],
+       [0., 1., 1., 2., 1., 3., 5., 3., 5., 8.]])
+~~~
+{: .output}
+
+Let's assume we wanted to multiply each of the 10 individual day values in a patient row for every patient, by contents of the following array:
+
+~~~
+multiplier = np.arange(1, 10)
+multipler
+~~~
+{: .language-python}
+
+~~~
+array([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+~~~
+{: .output}
+
+So, the first day value in a patient row is multiplied by 1, the second day by 2, the third day by 3, etc.
+
+We can just do:
+
+~~~
+subset * multiplier
+~~~
+{: .language-python}
+
+~~~
+array([[ 0.,  0.,  3., 12.,  5., 12., 28., 56., 72., 30.],
+       [ 0.,  2.,  6.,  4., 10.,  6., 21., 16., 18., 60.],
+       [ 0.,  2.,  3., 12., 15., 12., 42., 16., 45., 90.],
+       [ 0.,  0.,  6.,  0., 20., 12., 14.,  8., 54., 70.],
+       [ 0.,  2.,  3., 12., 15.,  6., 21., 40., 18., 40.],
+       [ 0.,  0.,  3.,  8., 10., 24., 14.,  8., 54., 40.],
+       [ 0.,  0.,  6.,  8., 20., 12., 14., 40., 45., 80.],
+       [ 0.,  0.,  3.,  8., 15.,  6., 14., 24., 45., 30.],
+       [ 0.,  0.,  0., 12.,  5., 30., 42., 40., 45., 80.],
+       [ 0.,  2.,  3.,  8.,  5., 18., 35., 24., 45., 80.]])
+~~~
+{: .output}
+
+Which gives us what we want, since each value in `multiplier` is applied successively to each value in a patient's row, but over every patient's row. So, every patient's first value is multiplied by 1, every patient's second value is multiplied by 2, etc.
+
+Since `multiplier` has only one dimension, but the size of that dimension matches our number of days (the second dimension of `subset`), broadcasting automatically repeats the data in `multiplier` to match the number of patients (the first dimension in `subset`) so the `*` operation can be applied over arrays of equal shape.
+
 
 {% include links.md %}
