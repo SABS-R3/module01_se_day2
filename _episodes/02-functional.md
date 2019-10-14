@@ -3,11 +3,16 @@ title: "Functional Programming"
 teaching: 65
 exercises: 25
 questions:
-- "Key question (FIXME)"
+- "What is functional programming?"
+- "What is recursion?"
+- "How does functional programming manipulate data?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Write recursive functions for to calculate simple sequences"
+- "Use the MapReduce model to process data"
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "Pure functions are functions which have no side effects"
+- "Recursion allows us to calculate a value in a sequence from previous values"
+- "The MapReduce model is a common way of processing large amounts of data"
 ---
 
 ## The Functional Paradigm

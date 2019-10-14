@@ -3,11 +3,14 @@ title: "Functional Programming in Python"
 teaching: 55
 exercises: 15
 questions:
-- "Key question (FIXME)"
+- "How do we express the MapReduce model in a more Pythonic way?"
+- "How can we make our data processing more memory efficient?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Use comprehensions as an alternative representation of the MapReduce model"
+- "Use lazy evaluation to be more memory efficient when processing large amounts of data"
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "Lazy evaluation does not calculate values until they are needed"
+- "Decorators are a way to modify the behaviour of existing functions"
 ---
 
 ## The Functional Paradigm
