@@ -194,6 +194,8 @@ def factorial(n):
 > >
 > > ~~~
 > > def fibonacci(n):
+> >     if n < 0:
+> >         raise ValueError('Fibonacci is not defined for N < 0')
 > >     if n == 0:
 > >         return 0
 > >     if n == 1:
@@ -252,6 +254,8 @@ print((lambda x: x + 1)(1))
 2
 ~~~
 {: .output}
+
+Note that the brackets around the lambda are used for clarity and are not a required part of the lambda expression in general.
 
 ## Map, Filter, Reduce
 

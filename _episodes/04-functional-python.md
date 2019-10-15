@@ -13,12 +13,56 @@ keypoints:
 - "Decorators are a way to modify the behaviour of existing functions"
 ---
 
-## The Functional Paradigm
+## Functional Programming in Python
 
+The Python language has been designed with a set of principles in mind, one of which is: "there's only one way to do it".
+Though this is not quite true, there *are* often a few valid ways to do something, there does tend to be one solution which is more **Pythonic** than the rest.
+
+It's not really possible to teach what is Pythonic and what is not.
+This tends to come from experience of using the language for long enough to get an intuition about which idioms feel more natural.
+
+> ## The Zen of Python
+>
+> Some of the principles that guided the design of Python are shared in 'The Zen of Python':
+>
+> ~~~
+> import this
+> ~~~
+> {: .language-python}
+>
+> ~~~
+> The Zen of Python, by Tim Peters
+> 
+> Beautiful is better than ugly.
+> Explicit is better than implicit.
+> Simple is better than complex.
+> Complex is better than complicated.
+> Flat is better than nested.
+> Sparse is better than dense.
+> Readability counts.
+> Special cases aren't special enough to break the rules.
+> Although practicality beats purity.
+> Errors should never pass silently.
+> Unless explicitly silenced.
+> In the face of ambiguity, refuse the temptation to guess.
+> There should be one-- and preferably only one --obvious way to do it.
+> Although that way may not be obvious at first unless you're Dutch.
+> Now is better than never.
+> Although never is often better than *right* now.
+> If the implementation is hard to explain, it's a bad idea.
+> If the implementation is easy to explain, it may be a good idea.
+> Namespaces are one honking great idea -- let's do more of those!
+> ~~~
+> {: .output}
+>
+> These principles are a reasonable set of guidelines when working in any language, not just Python, so it's worth reading and keeping in mind.
+> Many of the common problems we see with research software can be avoided by following these guidelines.
+>
+{: .callout}
 
 ## Comprehensions
 
-Comprehensions are a more **Pythonic** way to structure map and filter operations.
+Comprehensions are a more Pythonic way to structure map and filter operations.
 They serve exactly the same purpose, but are more concise and can be easier to structure in more complex cases, such as mapping over a 2d data structure.
 Using comprehensions also gives us control over which data structures we end up with, rather than always getting back a `map` or `filter` iterable.
 
@@ -57,7 +101,9 @@ print([2 * i for i in range(5) if i % 2 == 0])
 
 ### Dictionary and Set Comprehensions
 
-Dictionary and set comprehensions are fundamentally the same as list comprehensions but use the dictionary or set literal syntax:
+Dictionary and set comprehensions are fundamentally the same as list comprehensions but use the dictionary or set literal syntax.
+
+So set comprehensions are:
 
 ~~~
 print({2 * i for i in range(5)})
@@ -69,6 +115,8 @@ print({2 * i for i in range(5)})
 ~~~
 {: .output}
 
+While dictionary comprehensions are:
+
 ~~~
 print({i: 2 * i for i in range(5)})
 ~~~
@@ -78,6 +126,16 @@ print({i: 2 * i for i in range(5)})
 {0: 0, 1: 2, 2: 4, 3: 6, 4: 8}
 ~~~
 {: .output}
+
+> ## Why No Tuple Comprehension
+>
+> Raymond Hettinger, one of the Python core developers, said in 2013:
+>
+> ~~~
+> Generally, lists are for looping; tuples for structs. Lists are homogeneous; tuples heterogeneous. Lists for variable length.
+> ~~~
+>
+{: .callout}
 
 ## Generators
 
@@ -113,7 +171,7 @@ for i in (2 * i for i in range(5)):
 ~~~
 {: .output}
 
-Performance characteristics.
+To look at the reasons why you might choose to use a generator comprehension, we'll use some more IPython magics to investigate the performance of the different comprehensions.
 
 If we initialise and fully iterate over each comprehension, the time taken is very similar.
 
@@ -144,6 +202,7 @@ for x in l:
 {: .output}
 
 If we initialise both a list and a generator comprehension and store them, but do not iterate over them, the generator is around 100,000x faster.
+This is the result of lazy evaluation - if no values are calculated until we need them, we expect the initialisation to be very fast.
 
 ~~~
 %%timeit
@@ -200,29 +259,32 @@ for x in l:
 Since the list comprehension produces an actual list, whereas the generator comprehension doesn't produce any values until they are required, we also see a large difference in memory use between the two:
 
 ~~~
+%load_ext memory_profiler
 %%memit
-# Uses about 4GB RAM
-for x in [2*x for x in range(100000000)]:
+# Warning - uses about 400MB RAM
+for x in [2*x for x in range(int(1e7))]:
     pass
 ~~~
 {: .language-python}
 
 ~~~
-peak memory: 4786.71 MiB, increment: 3862.02 MiB
+peak memory: 438.18 MiB, increment: 386.56 MiB
 ~~~
 {: .output}
 
 ~~~
 %%memit
-for x in (2*x for x in range(100000000)):
+for x in (2*x for x in range(int(1e7))):
     pass
 ~~~
 {: .language-python}
 
 ~~~
-peak memory: 924.94 MiB, increment: 0.00 MiB
+peak memory: 51.78 MiB, increment: 0.00 MiB
 ~~~
 {: .output}
+
+In these outputs, 'peak memory' is the maximum amount of memory used by the Jupyter kernel during the task, while 'increment' is the amount of additional memory that running the cell required - this is the number we're interested in.
 
 ## Generator Functions
 
