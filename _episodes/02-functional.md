@@ -3,11 +3,16 @@ title: "Functional Programming"
 teaching: 65
 exercises: 25
 questions:
-- "Key question (FIXME)"
+- "What is functional programming?"
+- "What is recursion?"
+- "How does functional programming manipulate data?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Write recursive functions for to calculate simple sequences"
+- "Use the MapReduce model to process data"
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "Pure functions are functions which have no side effects"
+- "Recursion allows us to calculate a value in a sequence from previous values"
+- "The MapReduce model is a common way of processing large amounts of data"
 ---
 
 ## The Functional Paradigm
@@ -189,6 +194,8 @@ def factorial(n):
 > >
 > > ~~~
 > > def fibonacci(n):
+> >     if n < 0:
+> >         raise ValueError('Fibonacci is not defined for N < 0')
 > >     if n == 0:
 > >         return 0
 > >     if n == 1:
@@ -248,6 +255,8 @@ print((lambda x: x + 1)(1))
 ~~~
 {: .output}
 
+Note that the brackets around the lambda are used for clarity and are not a required part of the lambda expression in general.
+
 ## Map, Filter, Reduce
 
 One of the main applications of functional programming currently is the Map, Filter, Reduce model of data processing, usually refered to as **MapReduce**.
@@ -288,9 +297,8 @@ print(list(filter(lambda x: x > 1, l)))
 {: .language-python}
 
 ~~~
-6
 [2, 3]
-[2, 3, 4]
+[2, 3]
 ~~~
 {: .output}
 
@@ -367,7 +375,7 @@ print(reduce((lambda a, b: a + b), l))
 > ~~~
 > {: .output}
 >
-> > # Solution
+> > ## Solution
 > >
 > > ~~~
 > > from functools import reduce
@@ -398,7 +406,7 @@ print(reduce((lambda a, b: a + b), l))
 > ~~~
 > {: .output}
 >
-> > # Solution
+> > ## Solution
 > >
 > > ~~~
 > > from functools import reduce
