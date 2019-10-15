@@ -297,9 +297,8 @@ print(list(filter(lambda x: x > 1, l)))
 {: .language-python}
 
 ~~~
-6
 [2, 3]
-[2, 3, 4]
+[2, 3]
 ~~~
 {: .output}
 
