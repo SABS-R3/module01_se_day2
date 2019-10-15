@@ -318,6 +318,13 @@ for i in count_to_n(5):
 > Counting papers from academics.
 > 
 > ~~~
+> class Paper:
+>     def __init__(self, title):
+>         self.title = title
+>
+>     def __str__(self):
+>         return self.title
+>
 > class Person:
 >     def __init__(self, name):
 >         self.name = name
