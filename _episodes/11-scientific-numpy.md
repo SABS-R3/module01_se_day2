@@ -785,7 +785,7 @@ array([[[0., 0., 1., ..., 3., 0., 0.],
 And then, for example to get all inflammation data for the 10th patient in the first patient group:
 
 ~~~
-split_data([1, 10])
+split_data[0, 9]
 ~~~
 {: .language-python}
 
