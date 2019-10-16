@@ -325,11 +325,17 @@ for i in count_to_n(5):
 >     def __str__(self):
 >         return self.title
 >
+>     def __repr__(self):
+>         return self.title
+>
 > class Person:
 >     def __init__(self, name):
 >         self.name = name
 > 
 >     def __str__(self):
+>         return self.name
+> 
+>     def __repr__(self):
 >         return self.name
 > 
 > class Academic(Person):
@@ -338,19 +344,19 @@ for i in count_to_n(5):
 >         self.papers = []
 >         self.staff = []
 > 
->     def write_paper(title):
+>     def write_paper(self, title):
 >         new_paper = Paper(title)
 > 
 >         self.papers.append(new_paper)
 >         return new_paper
 > 
->     def add_staff(academic):
+>     def add_staff(self, academic):
 >         if academic not in self.staff:
 >             self.staff.append(academic)
 >     
 >     @property
 >     def all_papers(self):
->         papers = self.papers
+>         papers = list(self.papers)
 >         for staff in self.staff:
 >             papers = papers + staff.all_papers
 > 
